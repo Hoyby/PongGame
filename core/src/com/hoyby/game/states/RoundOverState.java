@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.hoyby.game.MyPongGame;
 
-public class GameOverState extends State {
+public class RoundOverState extends State {
 
     private final BitmapFont gameOver = new BitmapFont();
     private final BitmapFont pressAnywhere = new BitmapFont();
@@ -15,7 +15,7 @@ public class GameOverState extends State {
     private final PlayState playState;
 
 
-    public GameOverState(GameStateManager gsm, PlayState playState) {
+    public RoundOverState(GameStateManager gsm, PlayState playState) {
         super(gsm);
         cam.setToOrtho(false, MyPongGame.WIDTH, MyPongGame.HEIGHT);
         this.playState = playState;

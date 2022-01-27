@@ -77,4 +77,8 @@ public class Bar {
     public void dispose() {
         bar.dispose();
     }
+
+    public void resetPoints() {
+        points = 0;
+    }
 }

@@ -25,6 +25,8 @@ public class PlayState extends State{
         playerBar = new Bar(75);
         computerBar = new Bar(MyPongGame.HEIGHT - 75);
 
+        scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
+
         ball = new Ball();
     }
 
@@ -48,29 +50,40 @@ public class PlayState extends State{
         return scoreText;
     }
 
-//    TODO: fix score
-
     @Override
     public void update(float dt) {
         handleInput();
-        scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
         if (ball.ballHitTop()) {
             playerBar.addPoint();
+            scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            gsm.push(new GameOverState(gsm, this));
-            System.out.println("Player: " + playerBar.getPoints());
+            if (playerBar.getPoints() >= 21) {
+                gsm.push(new WinState(gsm, this));
+            }else{
+                gsm.push(new RoundOverState(gsm, this));
+            }
+
         }else if (ball.ballHitBottom()) {
             computerBar.addPoint();
+            scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            gsm.push(new GameOverState(gsm, this));
-            System.out.println("Computer: " + computerBar.getPoints());
+            if (computerBar.getPoints() >= 21) {
+                gsm.push(new WinState(gsm, this));
+            } else {
+                gsm.push(new RoundOverState(gsm, this));
+            }
         } else {
             ball.update(dt);
             computerBar.moveTowards(ball.getX(), ball.getSpeed());
             ball.collision(playerBar);
             ball.collision(computerBar);
         }
+    }
 
+    public void resetScores(){
+        playerBar.resetPoints();
+        computerBar.resetPoints();
+        scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
     }
 
     @Override
