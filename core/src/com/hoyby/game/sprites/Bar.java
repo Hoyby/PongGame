@@ -60,15 +60,25 @@ public class Bar {
 
     public void moveTowards(float x, long speed) {
         double multiplierFunction = 2 * (Math.log(speed / 90f) / Math.log(2));
-
-        if ((x - barWidth / 2f) + computerRandomAim > position.x ) {
-            position.x += multiplierFunction;
-        } else if ((x - barWidth / 2f) + computerRandomAim < position.x ) {
-            position.x -= multiplierFunction;
+        if ((x > 0) && (x < MyPongGame.WIDTH - barWidth / 2f)) {
+            if ((x - barWidth / 2f) + computerRandomAim > position.x) {
+                if (position.x + multiplierFunction > MyPongGame.WIDTH - barWidth) {
+                    position.x = MyPongGame.WIDTH - barWidth;
+                }else{
+                    position.x += multiplierFunction;
+                }
+            } else if ((x - barWidth / 2f) + computerRandomAim < position.x) {
+                if (position.x - multiplierFunction < 0) {
+                    position.x = 0;
+                }else {
+                    position.x -= multiplierFunction;
+                }
+            }
         }
     }
 
-    public void render(){
+    public void render(SpriteBatch sb){
+        bar.setProjectionMatrix(sb.getProjectionMatrix());
         bar.begin(ShapeRenderer.ShapeType.Filled);
         bar.rect(position.x, position.y, barWidth, barHeight);
         bar.end();

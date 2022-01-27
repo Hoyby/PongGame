@@ -1,5 +1,6 @@
 package com.hoyby.game.sprites;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -96,8 +97,8 @@ public class Ball {
         }
     }
 
-    public void render(){
-
+    public void render(SpriteBatch sb){
+        ball.setProjectionMatrix(sb.getProjectionMatrix());
         ball.begin(ShapeRenderer.ShapeType.Filled);
         ball.circle(position.x, position.y, radius);
         ball.end();

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.hoyby.game.MyPongGame;
 import com.hoyby.game.sprites.Ball;
 import com.hoyby.game.sprites.Bar;
@@ -21,6 +23,7 @@ public class PlayState extends State{
     public PlayState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, MyPongGame.WIDTH, MyPongGame.HEIGHT);
+        System.out.println(cam.viewportWidth + " " + cam.viewportHeight);
 
         playerBar = new Bar(75);
         computerBar = new Bar(MyPongGame.HEIGHT - 75);
@@ -37,8 +40,9 @@ public class PlayState extends State{
             if (!ball.isMoving()) {
                 ball.startBall();
             }
-            playerBar.setX(Gdx.input.getX());
-            Gdx.input.getY();
+            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(),0);
+            cam.unproject(mousePos);
+            playerBar.setX(mousePos.x);
         }
     }
 
@@ -57,7 +61,7 @@ public class PlayState extends State{
             playerBar.addPoint();
             scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            if (playerBar.getPoints() >= 21) {
+            if (playerBar.getPoints() >= 2) {
                 gsm.push(new WinState(gsm, this));
             }else{
                 gsm.push(new RoundOverState(gsm, this));
@@ -67,7 +71,7 @@ public class PlayState extends State{
             computerBar.addPoint();
             scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            if (computerBar.getPoints() >= 21) {
+            if (computerBar.getPoints() >= 2) {
                 gsm.push(new WinState(gsm, this));
             } else {
                 gsm.push(new RoundOverState(gsm, this));
@@ -88,13 +92,14 @@ public class PlayState extends State{
 
     @Override
     public void render(SpriteBatch sb) {
+        cam.update();
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         scoreText.draw(sb, scoreGlyphLayout, 10,MyPongGame.HEIGHT - 10);
         sb.end();
-        playerBar.render();
-        computerBar.render();
-        ball.render();
+        playerBar.render(sb);
+        computerBar.render(sb);
+        ball.render(sb);
 
     }
 
