@@ -61,7 +61,7 @@ public class PlayState extends State{
             playerBar.addPoint();
             scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            if (playerBar.getPoints() >= 2) {
+            if (playerBar.getPoints() >= 21) {
                 gsm.push(new WinState(gsm, this));
             }else{
                 gsm.push(new RoundOverState(gsm, this));
@@ -71,7 +71,7 @@ public class PlayState extends State{
             computerBar.addPoint();
             scoreGlyphLayout.setText(scoreText, "Player: " + playerBar.getPoints() + "\nComputer " + computerBar.getPoints());
             ball = new Ball();
-            if (computerBar.getPoints() >= 2) {
+            if (computerBar.getPoints() >= 21) {
                 gsm.push(new WinState(gsm, this));
             } else {
                 gsm.push(new RoundOverState(gsm, this));
